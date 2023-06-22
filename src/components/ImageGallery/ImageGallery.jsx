@@ -9,7 +9,6 @@ const ImageGallery = ({ images, isLoading }) => {
 
   return (
     <>
-      (
       <Gallery>
         {images.length > 0 &&
           images.map(image => (
@@ -18,7 +17,7 @@ const ImageGallery = ({ images, isLoading }) => {
             </GalleryItem>
           ))}
       </Gallery>
-      ){showLoader && <Loader />}
+      {showLoader && <Loader />}
     </>
   );
 };
