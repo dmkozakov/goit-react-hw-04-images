@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Formik, Field } from 'formik';
 import { toast } from 'react-toastify';
@@ -10,38 +9,35 @@ const initialValues = {
   query: '',
 };
 
-class Searchbar extends Component {
-  handleSubmit = ({ query }, { resetForm }) => {
+export default function Searchbar({ onSubmit }) {
+  const handleSubmit = ({ query }, { resetForm }) => {
     if (!query) {
       return toast.info('Please, enter a query');
     }
-    this.props.onSubmit(query.trim().toLowerCase());
+    onSubmit(query.trim().toLowerCase());
     resetForm();
   };
-  render() {
-    return (
-      <SearchbarStyled>
-        <Formik initialValues={initialValues} onSubmit={this.handleSubmit}>
-          <SearchForm>
-            <button type="submit">
-              <span>Search</span>
-            </button>
 
-            <Field
-              name="query"
-              type="text"
-              autoComplete="off"
-              autoFocus
-              placeholder="Search images and photos"
-            />
-          </SearchForm>
-        </Formik>
-      </SearchbarStyled>
-    );
-  }
+  return (
+    <SearchbarStyled>
+      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+        <SearchForm>
+          <button type="submit">
+            <span>Search</span>
+          </button>
+
+          <Field
+            name="query"
+            type="text"
+            autoComplete="off"
+            autoFocus
+            placeholder="Search images and photos"
+          />
+        </SearchForm>
+      </Formik>
+    </SearchbarStyled>
+  );
 }
-
-export default Searchbar;
 
 Searchbar.propTypes = {
   onSubmit: PropTypes.func.isRequired,

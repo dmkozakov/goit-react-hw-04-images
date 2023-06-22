@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import AppStyled from './App.styled';
@@ -7,76 +7,65 @@ import fetchImages from 'services/pixabay-api';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
 
-export class App extends Component {
-  state = {
-    images: [],
-    searchQuery: '',
-    page: 1,
-    isLoading: false,
-  };
+export default function App() {
+  const [images, setImages] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-  async componentDidUpdate(_, prevState) {
-    const { searchQuery, page } = this.state;
-    if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
-      await this.requestImages(searchQuery, page);
+  useEffect(() => {
+    if (!searchQuery) {
+      return;
     }
-  }
 
-  requestImages = async (searchQuery, page) => {
-    try {
-      this.setState({ isLoading: true });
+    const requestImages = async (searchQuery, page) => {
+      try {
+        setIsLoading(true);
 
-      const response = await fetchImages(searchQuery, page);
-      const images = response.hits;
+        const response = await fetchImages(searchQuery, page);
+        const images = response.hits;
 
-      if (page === 1) {
-        this.setState({ images });
-      } else {
-        this.setState(prevState => ({
-          images: [...prevState.images, ...images],
-        }));
+        if (page === 1) {
+          setImages(images);
+        } else {
+          setImages(state => [...state, ...images]);
+        }
+      } catch (error) {
+        toast.error(error.message);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      toast.error(error.message);
-    } finally {
-      this.setState({ isLoading: false });
-    }
+    };
+
+    requestImages(searchQuery, page);
+  }, [page, searchQuery]);
+
+  const handleSubmit = async query => {
+    setSearchQuery(query);
+    setPage(1);
   };
 
-  handleSubmit = async query => {
-    this.setState({ searchQuery: query, page: 1 });
+  const handleLoadMore = async () => {
+    setPage(state => state + 1);
   };
 
-  handleLoadMore = async () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
-  };
-
-  render() {
-    const { images, isLoading } = this.state;
-
-    return (
-      <AppStyled>
-        <Searchbar
-          onSubmit={this.handleSubmit}
-          onSearchBtn={this.handleSearchBtn}
-        />
-        <ImageGallery images={images} isLoading={isLoading} />
-        {images.length !== 0 && !isLoading && (
-          <Button onClick={this.handleLoadMore} />
-        )}
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-      </AppStyled>
-    );
-  }
+  return (
+    <AppStyled>
+      <Searchbar onSubmit={handleSubmit} />
+      <ImageGallery images={images} isLoading={isLoading} />
+      {images.length !== 0 && !isLoading && <Button onClick={handleLoadMore} />}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </AppStyled>
+  );
 }
