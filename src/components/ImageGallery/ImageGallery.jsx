@@ -2,11 +2,8 @@ import PropTypes from 'prop-types';
 import Gallery from './ImageGallery.styled';
 import GalleryItem from 'components/ImageGalleryItem/ImageGalleryItem.styled';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
-import Loader from 'components/Loader/Loader';
 
 const ImageGallery = ({ images, isLoading }) => {
-  const showLoader = isLoading && images.length > 0;
-
   return (
     <>
       <Gallery>
@@ -17,7 +14,6 @@ const ImageGallery = ({ images, isLoading }) => {
             </GalleryItem>
           ))}
       </Gallery>
-      {showLoader && <Loader />}
     </>
   );
 };

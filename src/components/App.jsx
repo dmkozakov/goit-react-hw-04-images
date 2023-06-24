@@ -6,6 +6,7 @@ import Searchbar from './Searchbar/Searchbar';
 import fetchImages from 'services/pixabay-api';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
+import Loader from './Loader/Loader';
 
 export default function App() {
   const [images, setImages] = useState([]);
@@ -42,6 +43,7 @@ export default function App() {
 
   const handleSubmit = async query => {
     setSearchQuery(query);
+    setImages([]);
     setPage(1);
   };
 
@@ -53,6 +55,8 @@ export default function App() {
     <AppStyled>
       <Searchbar onSubmit={handleSubmit} />
       <ImageGallery images={images} isLoading={isLoading} />
+      {isLoading && <Loader />}
+
       {images.length !== 0 && !isLoading && <Button onClick={handleLoadMore} />}
       <ToastContainer
         position="top-center"

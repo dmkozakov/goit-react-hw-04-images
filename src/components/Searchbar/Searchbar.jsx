@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import SearchbarStyled from './Searchbar.styled';
 import SearchForm from './SearchForm.styled';
+import { BsSearch } from 'react-icons/bs';
 
 const initialValues = {
   query: '',
@@ -23,7 +24,9 @@ export default function Searchbar({ onSubmit }) {
       <Formik initialValues={initialValues} onSubmit={handleSubmit}>
         <SearchForm>
           <button type="submit">
-            <span>Search</span>
+            <span>
+              <BsSearch />
+            </span>
           </button>
 
           <Field
