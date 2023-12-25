@@ -1,10 +1,14 @@
-import PropTypes from 'prop-types';
 import Modal from 'components/Modal/Modal';
 import { useState } from 'react';
+import { IPicture } from 'interfaces/IPicture';
+
+interface Props {
+  image: IPicture;
+}
 
 export default function ImageGalleryItem({
   image: { webformatURL, largeImageURL, tags },
-}) {
+}: Props) {
   const [showModal, setShowModal] = useState(false);
 
   const openModal = () => {
@@ -27,9 +31,3 @@ export default function ImageGalleryItem({
     </>
   );
 }
-
-ImageGalleryItem.propTypes = {
-  tags: PropTypes.string,
-  largeImageURL: PropTypes.string,
-  webformatURL: PropTypes.string,
-};

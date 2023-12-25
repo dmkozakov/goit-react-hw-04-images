@@ -9,7 +9,7 @@ const Loader = () => {
       color="#3f51b5"
       ariaLabel="three-dots-loading"
       wrapperStyle={{ justifyContent: 'center' }}
-      wrapperClassName="loader"
+      wrapperClass="loader"
       visible={true}
     />
   );

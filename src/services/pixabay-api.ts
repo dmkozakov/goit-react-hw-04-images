@@ -6,7 +6,7 @@ const parameters = new URLSearchParams({
   key: '35406729-d8fde4d78194a9b2786209d5b',
   image_type: 'photo',
   orientation: 'horizontal',
-  per_page: 10,
+  per_page: '10',
 });
 
 async function fetchImages(query = '', page = 1) {

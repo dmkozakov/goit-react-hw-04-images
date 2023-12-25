@@ -1,15 +1,19 @@
-import PropTypes from 'prop-types';
 import Gallery from './ImageGallery.styled';
 import GalleryItem from 'components/ImageGalleryItem/ImageGalleryItem.styled';
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
+import { IPicture } from 'interfaces/IPicture';
 
-const ImageGallery = ({ images, isLoading }) => {
+interface Props {
+  images: IPicture[];
+}
+
+const ImageGallery = ({ images }: Props) => {
   return (
     <>
       <Gallery>
         {images.length > 0 &&
           images.map(image => (
-            <GalleryItem key={image.id}>
+            <GalleryItem key={image.webformatURL}>
               <ImageGalleryItem image={image} />
             </GalleryItem>
           ))}
@@ -19,7 +23,3 @@ const ImageGallery = ({ images, isLoading }) => {
 };
 
 export default ImageGallery;
-
-ImageGallery.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
